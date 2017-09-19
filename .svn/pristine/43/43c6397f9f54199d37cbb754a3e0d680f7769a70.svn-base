@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		
+		//闭包;
+		//继承;
+
+		// 什么是闭包?;   局部变量升级成自由变量; 一种变量进化的方式; 函数套函数;
+
+		// 闭包的原理是什么? ;  内存的垃圾回收机制;
+
+		// 闭包的应用场景 ?; for ;
+			// var aLi = document.get...
+			// for(var i ....){
+			// 	// (function(index){
+			// 	// 	aLi[i].onclick = function(){
+			// 	// 		console.log(index);
+			// 	// 	}
+			// 	// })(i);// 0 1 ~ aLi.length - 1;
+			// 	aLi[i].onclick = (function(index){
+			// 		return function(){
+			// 			console.log(index);
+			// 		}
+			// 	})(i)
+			// }
+
+		// 继承;
+			// 属性
+			// call apply; 
+			// 原型继承;
+			// for in继承;
+
+		// var obj = {name:123};
+
+		// var obj2 = {};
+		// obj2 = obj;
+		
+		// obj2.name = 456;
+		// console.log(obj.name);
+
+		// var a = function(){
+		// }.bind(123);		
+
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>飞机大战</title>
+</head>
+<link rel="stylesheet" href="css/common.css">
+<body>
+	<div id="wrap">
+		<ul id="option">
+			<li>超级困难</li>
+			<li>非常困难</li>
+			<li>比较困难</li>
+			<li>就选我吧</li>
+		</ul>
+	</div>
+	<script>
+		
+		function Engine(){
+			this.wrap = $('wrap');
+			this.timerCache = {};
+			this.hardness = null;
+			
+			this.init();
+		}
+
+		Engine.prototype = {
+			init(){
+				var options = $('option').children;
+
+				var that = this;
+				for(var i = 0 ; i < options.length; i++){
+					(function(i){
+						options[i].onclick = function(){
+							this.parentNode.remove();
+							that.hardness = i;
+							that.render('logo');
+							that.render('loading');
+							that.loadingMove();
+							that.bgMove();
+
+							setTimeout(function(){
+								clearInterval(that.timerCache['loadingTimer']);
+								delete that.timerCache['loadingTimer'];
+								that.logo.remove();
+								that.loading.remove();
+								that.renderPlane();
+							},1000)
+						}
+					})(i)
+				}
+			},
+			render(type){
+				var nDiv = document.createElement('div');
+				nDiv.className = type;
+				document.body.appendChild(nDiv);
+				this[type] = nDiv;
+			},
+			loadingMove(){
+				var index = 0;
+				var that = this;
+				var loadingTimer = setInterval(function(){
+					index++;
+					that.loading.style.background = 'url(images/loading'+ (index % 3 + 1) +'.png)';
+				},500);
+
+				this.timerCache['loadingTimer'] = loadingTimer;
+			},
+			bgMove(){
+				this.bgIndex = 0;
+				var that = this;
+				var bgTimer = setInterval(function(){
+					that.bgIndex += 10;
+					this.wrap.style.backgroundPositionY = that.bgIndex + 'px';
+				},30);
+
+				this.timerCache['bgTimer'] = bgTimer;
+			},
+			renderPlane(){
+				var nDiv = document.createElement('div');
+				nDiv.className = 'plane';
+				this.wrap.appendChild(nDiv);
+				this.plane = nDiv;
+				Plane.init(this.wrap,this.plane);
+			}
+		}
+
+		var engine = new Engine();
+
+		var Plane = {
+			bullets : [],
+			curPos : {
+				left : null,
+				top : null
+			},
+			init(range,obj){
+				// 绑定事件
+				var that = this;
+
+				document.onmousemove = function(e){
+					e = e || window.event;
+					that.borderCheck(e.clientX - range.offsetLeft - obj.offsetWidth / 2,e.clientY - obj.offsetHeight / 2,obj,range);
+
+					obj.style.left = that.curPos.left + 'px';
+					obj.style.top = that.curPos.top + 'px';
+				}
+
+				// 匹配难度
+
+				var delay = 0;
+
+				switch (engine.hardness) {
+					case 0:
+						delay = 300;
+						break;
+					case 1:
+						delay = 200;
+						break;
+					case 2:
+						delay = 100;
+						break;
+					case 3:
+						delay = 60;
+				}
+
+				var createBulletsTimer = setInterval(function(){
+					
+					that.bullets.forEach(function(n,i){
+						if(n.offsetTop<= 0){
+							that.bullets.splice(i,1);
+						}
+					})
+
+					new Bullet(range,obj);
+
+				},delay)
+			},
+			borderCheck(left,top,obj,range){
+				this.curPos.left = left;
+				this.curPos.top = top;
+
+				if(left <= 0){
+					this.curPos.left = 0;
+				}
+				
+				if(left >= range.offsetWidth - obj.offsetWidth){
+					this.curPos.left = range.offsetWidth - obj.offsetWidth
+				}
+
+				this.curPos.top = top <=0 ? 0 : top;
+				
+				if(top >= document.body.clientHeight - obj.offsetHeight - 50){
+					this.curPos.top = document.body.clientHeight - obj.offsetHeight- 50;
+				} 
+			}
+		}
+
+		function Bullet(range,obj){
+			this.wrap = range;
+			this.plane = obj;
+			this.ele = null;
+			this.timer = null;
+
+			this.init();
+		}
+
+		Bullet.prototype = {
+			constructor:Bullet,
+			init(){
+				var div = document.createElement('div');
+					div.className = 'bullet';
+					this.wrap.appendChild(div);
+
+				div.style.left = this.plane.offsetLeft + this.plane.offsetWidth / 2  + 'px';
+				div.style.marginLeft = - div.offsetWidth / 2.5 + 'px';
+				div.style.top = this.plane.offsetTop - div.offsetHeight + 'px';
+				div.posY = -20;
+
+				this.ele = div;
+
+				Plane.bullets.push(div);
+
+				var that = this;
+
+				this.timer = setInterval(function(){
+					div.style.top = div.offsetTop + div.posY + 'px';
+					if(div.offsetTop <= 0 ){
+						that.die();
+					}
+				},30);
+
+			},
+			die(){
+				clearInterval(this.timer);
+				this.ele.className = 'die1';
+				var that = this;
+				setTimeout(function(){
+					that.ele.remove();
+				},200)
+			}
+		}
+
+
+		function $(id){
+			return document.getElementById(id);
+		}
+
+	</script>
+</body>
+</html>

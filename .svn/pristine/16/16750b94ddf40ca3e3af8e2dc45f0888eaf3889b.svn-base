@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script></script>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#drag1,#drag2{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			background: #000;
+		}
+
+		#drag2{
+			background: #f99;
+			left: 200px;
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div id="drag1"> 
+		 
+	</div>
+	<div id="drag2"> 
+		 
+	</div>
+
+</body>
+<script>
+
+	class MyDrag {
+		// constructor(){
+
+		// }
+
+		init(id){
+			this.ele = document.getElementById(id);
+			this.wrapWidth = document.body.clientWidth || document.documentElement.clientWidth;
+			this.wrapHeight = document.body.clientHeight || document.documentElement.clientHeight;
+
+			this.bindEvent();
+		}
+
+		bindEvent(){
+			var _this = this;
+			this.ele.onmousedown = function(e){
+				e = e || window.event;
+				var left = e.offsetX,
+					top = e.offsetY;
+
+				var that = this;
+				document.onmousemove = function(e){
+					e = e || window.event;
+
+					_this.realLeft = e.clientX - left;
+					_this.realTop = e.clientY - top;
+
+					_this.borderCheck();
+
+					that.style.left = _this.realLeft + 'px';
+					that.style.top = _this.realTop + 'px';
+				}
+
+				document.onmouseup = function(){
+					document.onmousemove = null;
+				}
+
+			}
+		}
+
+		borderCheck(){
+			this.realLeft = this.realLeft < 0 ? 0 : this.realLeft;
+			this.realTop = this.realTop < 0 ? 0 : this.realTop;	
+		}
+	}
+
+	class SonDrag extends MyDrag{
+		// constructor(){
+		// 	super();
+		// }
+
+		borderCheck(){
+			this.realLeft = this.realLeft < 0 ? 0 : this.realLeft;
+			if(this.realLeft >= this.wrapWidth - this.ele.offsetWidth){
+				this.realLeft = this.wrapWidth - this.ele.offsetWidth;
+			}
+			this.realTop = this.realTop < 0 ? 0 : this.realTop;	
+			if(this.realTop >= this.wrapHeight - this.ele.offsetHeight){
+				this.realTop = this.wrapHeight - this.ele.offsetHeight;
+			}
+		}
+	}
+
+	new MyDrag().init('drag1');
+	new SonDrag().init('drag2');
+		
+
+
+</script>
+</html>	

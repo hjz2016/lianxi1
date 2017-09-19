@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="dahuiji.css" />
+	
+	<script>
+<<<<<<< .mine
+		// 要做的事情;
+
+		// 1.点击难度之后删除ul元素;
+		// 2.插入元素 logo ， loading ;
+		// 3.背景图运动;
+||||||| .r1
+			window.onload = function(){
+				new Engine();
+			}
+			//功能:
+				// 1. 选择难度 => 记录难度;
+				// 2. 开始动画 => 结束动画;
+			function Engine(){
+				this.ele = $("body_main");//背景;
+				this.choice = $("options").children;// 按钮;
+				this.init();//初始化;
+			}
+
+			Engine.prototype.init = function(){
+				//绑定事件;
+				var that = this;
+				for(var i = 0 ; i < this.choice.length ; i++){
+					this.choice[i].onclick = function(){
+						that.difficulty = this.value;//储存难度;
+						that.animation();// 开场动画;
+					}
+				}
+			}
+=======
+			window.onload = function(){
+				new Engine();
+			}
+			//功能:
+				// 1. 选择难度 => 记录难度;
+				// 2. 开始动画 => 结束动画;
+		  pe.init = function(){
+				//绑定事件;
+				var that = this;
+				for(var i = 0 ; i < this.choice.length ; i++){
+					this.choice[i].onclick = function(){
+						that.difficulty = this.value;//储存难度;
+						that.animation();// 开场动画;
+					}
+				}
+			}
+>>>>>>> .r3
+
+<<<<<<< .mine
+		window.onload = function(){
+			new Engine();
+		}
+||||||| .r1
+			Engine.prototype.animation = function(){ //开场动画;
+				//1.删除无用元素;
+				this.choice[0].parentNode.remove();
+				//2.元素入场;(logo)
+				var logo = document.createElement("div");
+				logo.className = "logo";
+				document.body.appendChild(logo);
+				//2.2 元素入场(动画飞机);
+				var smallPlane = document.createElement("div");
+				smallPlane.className = "loading";
+				document.body.appendChild(smallPlane);
+				// 小飞机动画实现;
+				var index = 0;//让他在定时器里出现 1 , 2 , 3 ;
+				var timer = setInterval(function(){
+					//console.log( ++index % 3 + 1); 1 ,2 , 3 
+					smallPlane.style.background = "url(images/loading"+ (++index % 3 + 1) +".png) no-repeat "
+=======
+			Engine.prototype.animation = function(){ //开场动画;
+				//1.删除无用元素;
+				//2.元素入场;(logo)
+				var logo = document.createElement("div");
+				logo.className = "logo";
+				document.body.appendChild(logo);
+				var smallPlane = document.createElement("div");
+				document.body.appendChild(smallPlane);
+				// 小飞机动画实现;
+				var index = 0;//让他在定时器里出现 1 , 2 , 3 ;
+					//console.log( ++index % 3 + 1); 1 ,2 , 3 
+				
+>>>>>>> .r3
+
+		function Engine(){
+			this.ele = $("body_main");		
+			this.init();	
+		}
+
+		Engine.prototype.init = function(){
+			// 点击难度选项 保存用户选中的难度;
+			var aOptions = $("options").children;
+			var that = this;
+			for(var i = 0 ; i < aOptions.length ; i++){
+				aOptions[i].onclick = (function(index){
+					//console.log(index);
+					return function(){
+						//console.log(index);
+						//Engine之中的难度 属性;
+						that.hard = index; //保存难度; 0 困难  ->  3 简单
+						//调用动画功能;
+						// console.log(this);
+						this.parentNode.remove();//删除父级元素;
+						that.animation();
+					}
+				})(i)
+			}
+		}
+
+		Engine.prototype.animation = function(){
+
+			// 插入logo;
+				// 创建div标签;
+				// 设置class样式;
+				// 插入页面(body)之中;
+			var logo = createEle("logo");
+			// 创建loading 
+			var loading = createEle("loading");
+
+			var index = 0; // 循环用的数字; => 0 1 2 
+			// 放屁飞机的动画;
+			var loadTimer = setInterval(function(){
+					index ++;
+					loading.style.background = "url(images/loading"+(index % 3 + 1)+".png)"
+			}, 500);
+
+			var that = this;
+			var positionY = 0;
+
+			this.egineTimer = setInterval(function(){
+				positionY += 10;
+				that.ele.style.backgroundPositionY = positionY + "px";
+			}, 50);
+
+			setTimeout(function(){
+				clearInterval(loadTimer);
+				logo.remove();
+				loading.remove();	
+			}, 5000);
+		}	
+
+		var plane = {
+			
+		}
+
+		function createEle(css){
+			// 创建div标签;
+			// 设置class样式;
+			// 插入页面(body)之中;
+			// 返回创建的元素;
+			var div = document.createElement("div");
+			div.className = css;
+			document.body.appendChild(div);
+			return div;
+		}
+
+		function $(id){
+			return document.getElementById(id)
+		}
+
+	</script>
+
+</head>
+<body>
+	<div id="body_main" class="main">
+			<ul id="options" class="options">
+				<li value="1">超级困难</li>
+				<li value="2">非常困难</li>
+				<li value="3">比较困难</li>
+				<li value="4">就选我吧</li>
+			</ul>
+	</div>
+</body>	
+</html>	

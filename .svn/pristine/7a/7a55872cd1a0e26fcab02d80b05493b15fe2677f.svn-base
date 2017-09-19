@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		function fn(){
+			this.a = 10;
+		}	
+		fn.prototype.show = function(){
+			
+		}
+
+
+
+		new fn();
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

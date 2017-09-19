@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script></script>
+	<style>
+		#drag1,#drag2{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			background: #000;
+		}
+
+		#drag2{
+			background: #f99;
+			left: 200px;
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div id="drag1"> 
+		 
+	</div>
+	<div id="drag2"> 
+		 
+	</div>
+
+</body>
+<script>
+	
+// 设计拖拽;
+
+	// function Drag(id){
+	// 	this.ele = document.getElementById(id);
+	// 	this.init();
+	// }
+
+	// // init;
+
+	// Drag.prototype.init = function(){
+	// 	//绑定事件;
+	// 	// onmousedown 
+	// 		// onmousemove;
+	// 		// onmouseup		
+	// 	var that = this;
+	// 	this.ele.onmousedown = function(event){
+	// 		// 获取 offsetX 值 offsetY 值;
+	// 		var evt = event || window.event;
+	// 		that.offsetX = evt.offsetX;
+	// 		that.offsetY = evt.offsetY;
+	// 		document.onmousemove = function(event){
+	// 			var evt = event || window.event;
+	// 			that.move(evt);
+	// 		}
+	// 		document.onmouseup = function(){
+	// 			document.onmousemove = null;
+	// 		}
+	// 	}
+	// }
+
+	// Drag.prototype.move = function(evt){
+	// 	//console.log(1);
+	// 	var left = evt.clientX - this.offsetX;
+	// 	var top = evt.clientY - this.offsetY;
+	// 	console.log(evt.clientX , this.offsetX);
+	// 	this.ele.style.left = left + "px";
+	// 	this.ele.style.top = top + "px";
+	// }
+
+	// new Drag("drag1");
+
+	// function ExtendDrag(id){
+	// 	Drag.call(this,id);
+	// }
+	// for(var i in Drag.prototype){
+	// 	ExtendDrag.prototype[i] = Drag.prototype[i]
+	// }
+	// ExtendDrag.prototype.move = function(evt){
+	// 	var left = evt.clientX - this.offsetX;
+	// 	var top = evt.clientY - this.offsetY;
+	// 	left = left < 0 ? 0 : left;
+	// 	this.ele.style.left = left + "px";
+	// 	this.ele.style.top = top + "px";
+	// }
+	// new ExtendDrag("drag2");
+
+
+</script>
+</html>	

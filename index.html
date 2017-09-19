@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>飞机大战</title>
+</head>
+<link rel="stylesheet" href="css/common.css">
+<body>
+	<div id="wrap">
+		<ul id="option">
+			<li>超级困难</li>
+			<li>非常困难</li>
+			<li>比较困难</li>
+			<li>就选我吧</li>
+		</ul>
+	</div>
+	<div id="score_bar">
+		分数：<span id= 'score'></span>
+	</div>
+	<div id="great">
+		great <span style='color: orange;'>!!!</span>
+	</div>
+</body>
+	<script src='js/enemy.js'></script>
+	<script src='js/bullet.js'></script>
+	<script src='js/plane.js'></script>
+	
+	<script>
+		var score = document.getElementById('score');
+		var great = document.getElementById('great');
+		
+		function Engine(){
+			this.wrap = $('wrap');
+			this.timerCache = {};
+			this.hardness = null;
+			this.enemyArr = [];
+
+			this.init();
+		}
+
+		Engine.prototype = {
+			init(){
+				var options = $('option').children;
+
+				var that = this;
+				for(var i = 0 ; i < options.length; i++){
+					(function(i){
+						options[i].onclick = function(){
+							this.parentNode.remove();
+							that.hardness = i;
+							that.render('logo');
+							that.render('loading');
+							that.loadingMove();
+							that.bgMove();
+
+							setTimeout(function(){
+								clearInterval(that.timerCache['loadingTimer']);
+								delete that.timerCache['loadingTimer'];
+								that.logo.remove();
+								that.loading.remove();
+								that.renderPlane();
+								that.renderEnemy();
+							},1000)
+						}
+					})(i)
+				}
+			},
+			render(type){
+				var nDiv = document.createElement('div');
+				nDiv.className = type;
+				document.body.appendChild(nDiv);
+				this[type] = nDiv;
+			},
+			loadingMove(){
+				var index = 0;
+				var that = this;
+				var loadingTimer = setInterval(function(){
+					index++;
+					that.loading.style.background = 'url(images/loading'+ (index % 3 + 1) +'.png)';
+				},500);
+
+				this.timerCache['loadingTimer'] = loadingTimer;
+			},
+			bgMove(){
+				this.bgIndex = 0;
+				var that = this;
+				var bgTimer = setInterval(function(){
+					that.bgIndex += 10;
+					this.wrap.style.backgroundPositionY = that.bgIndex + 'px';
+				},30);
+
+				this.timerCache['bgTimer'] = bgTimer;
+			},
+			renderPlane(){
+				var nDiv = document.createElement('div');
+				nDiv.className = 'plane';
+				this.wrap.appendChild(nDiv);
+				this.plane = nDiv;
+				Plane.init(this.wrap,this.plane);
+			},
+			renderEnemy(){
+				// 造敌机
+				var that = this;
+				var createEnemyTimer = setInterval(function(){
+					var randomInt = Math.round(Math.random() * 2 + 1);
+					
+					var enemy = new Enemy(randomInt,that.wrap);
+
+					that.enemyArr.push(enemy);
+				},1000);
+
+				this.timerCache['createEnemyTimer'] = createEnemyTimer;
+				
+			}
+		}
+
+		var engine = new Engine();
+
+		function showGreat(left,top){
+			great.style.opacity = 1;
+			great.style.left = left + engine.wrap.offsetLeft + 'px';
+			great.style.top = top + 'px';
+
+			var speed = 2;
+			var timer = setInterval(function(){
+				great.style.top = great.offsetTop - speed + 'px';
+				if(great.offsetTop < top - 20){
+					clearInterval(timer);
+					setTimeout(function(){
+						great.style.opacity = 0;
+					},200)
+				}
+			},30)
+
+			
+		}
+
+
+		function $(id){
+			return document.getElementById(id);
+		}
+
+	</script>
+
+</html>

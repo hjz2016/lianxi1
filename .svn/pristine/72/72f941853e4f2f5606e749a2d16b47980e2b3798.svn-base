@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script></script>
+	<style>
+		#drag1,#drag2{
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			background: #000;
+		}
+
+		#drag2{
+			background: #f99;
+			left: 200px;
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div id="drag1"> 
+		 
+	</div>
+	<div id="drag2"> 
+		 
+	</div>
+
+</body>
+<script>
+// 设计拖拽;
+	function Drag(){};
+	Drag.prototype = {
+		constructor:Drag,
+		init:function(id){
+			//选择元素;
+			this.ele = document.getElementById(id);
+			//console.log(this.ele);
+			//绑定事件;
+			var that = this;
+			this.ele.onmousedown = function(event){
+				var evt = event || window.event;
+				that.offsetX = evt.offsetX;
+				that.offsetY = evt.offsetY;
+				document.onmousemove = function(event){
+					var evt = event || window.event;
+					that.move(evt);
+				}
+				document.onmouseup = function(){
+					document.onmousemove = null;
+				}
+			}
+		},
+		move:function(evt){
+			var left = evt.clientX - this.offsetX;
+			var top = evt.clientY - this.offsetY;
+			this.ele.style.left = left + "px";
+			this.ele.style.top = top + "px";
+		}
+	}
+
+	new Drag().init("drag1");
+	function extendDrag(){};
+	extendDrag.prototype = new Drag();
+	extendDrag.prototype.move = function(evt){
+			var left = evt.clientX - this.offsetX;
+			var top = evt.clientY - this.offsetY;
+			left = left < 0 ? 0 : left;
+			this.ele.style.left = left + "px";
+			this.ele.style.top = top + "px";
+	}
+	new extendDrag().init("drag2");
+
+</script>
+</html>	
